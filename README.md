@@ -1,4 +1,4 @@
-# fyp
+# My Final year Project repo
 
 > A Vue.js project
 
