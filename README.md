@@ -1,6 +1,6 @@
 # My Final year Project repo
 
-> A Vue.js project
+> Using Vue js and Three js
 
 ## Build Setup
 
