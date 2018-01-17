@@ -1,5 +1,5 @@
 
-
+import * as THREE from 'three';
 
 export var scene;
 export var camera;
@@ -26,11 +26,11 @@ export const start = function(callback){
 	app.appendChild(renderer.domElement);
 
 
-	let ambientLight = new THREE.AmbientLight( 0xfffbd1, 1 );
+	let ambientLight = new THREE.AmbientLight( 0xfffbd1, 2 );
 	scene.add( ambientLight );
 
 
-	let light = new THREE.PointLight( 0xffffff, 0.15, 0 );
+	let light = new THREE.PointLight( 0xffffff, 0, 0 );
 	light.position.set(0,2,10);
 	scene.add( light );
 

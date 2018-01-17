@@ -1,4 +1,4 @@
-
+import * as THREE from 'three';
 
 export function loadPlayer(url, namespace){
 
@@ -11,7 +11,6 @@ export function loadPlayer(url, namespace){
 	    	obj.receiveShadow = true;
 			obj.castShadow = true;
 
-			console.log(obj);
 	        namespace.scene.add( obj );
 
 	    },
@@ -22,10 +21,10 @@ export function loadPlayer(url, namespace){
 
 
 
-export function calcDimensions(obj) {
+export function calcSize(obj) {
 
 	let objDimensions = new THREE.Box3();
-	objDimensions.setFromObject( obj );
+		objDimensions.setFromObject( obj );
 	let objHeight = objDimensions.max.y - objDimensions.min.y,
 		objWidth = objDimensions.max.x - objDimensions.min.x,
 		objDept = objDimensions.max.z - objDimensions.min.z;

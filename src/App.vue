@@ -4,6 +4,7 @@
 
 <script>
 
+
 import * as main from './assets/js/main.js';
 import {Player} from './assets/js/playerclass.js';
 
@@ -24,7 +25,7 @@ export default {
 
     main.start( function() {
 
-      player = new Player('./src/assets/models/draugr2.json', main);
+      player = new Player('./src/assets/models/draugr4.json', main);
 
     });
 

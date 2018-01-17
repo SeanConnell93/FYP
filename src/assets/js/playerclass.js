@@ -1,7 +1,7 @@
 
 
-
-import {calcDimensions} from './helpers.js';
+import * as THREE from 'three';
+import {calcSize} from './helpers.js';
 import {scene} from './main.js';
 
 
@@ -26,16 +26,17 @@ export class Player {
 		this.faceingRight = false;
 		this.faceingLeft = false;
 
-		this.faceRight = -1.6;
-		this.faceLeft = 1.5;
+		this.faceRight = 90 * Math.PI / 180;
+		this.faceLeft = -90 * Math.PI / 180;
 
-		this.turnSpeed = 0.2;
+		this.turnSpeed = 20 * Math.PI / 180;
 
 		// Collider settings
 		this.height;
 		this.width;
 
 		this.playerCollider;
+		this.animation;
 
 	}
 
@@ -45,6 +46,9 @@ export class Player {
 		this.initJump();
 		this.initGravity();
 		this.colliderUpdate();
+
+		
+
 		
 	}
 
@@ -53,29 +57,47 @@ export class Player {
 
 		let loader = new THREE.ObjectLoader();
 
+
 		loader.load(url,
 
 		    obj => {
 
 		    	obj.receiveShadow = true;
-				obj.castShadow = true;
+				obj.castShadow = true; 
 
 				this.character = obj;
 
+				this.character.rotation.y = this.faceRight;
+
 				this.addCollider(obj);
 
+				let manager = new THREE.LoadingManager();
+				let textureLoader = new THREE.TextureLoader( manager );
+				let texture = textureLoader.load( './src/assets/models/color-platte.jpg' );
+
+				obj.traverse( child => {
+					if ( child instanceof THREE.Mesh ) child.material.map = texture;
+				} );
+
 		        namespace.scene.add( obj );
+
+		        this.animation = new THREE.MorphAnimation(obj);
+		        this.animation.play();
+
+		        console.log(this.character);
 
 		    },
 
 		);
+
+
 
 	}
 
 
 	addCollider(player) {
 
-		let collider = calcDimensions(player);
+		let collider = calcSize(player);
 
 		let geometry = new THREE.BoxGeometry( collider.x, collider.y, collider.z );
 		let material = new THREE.MeshBasicMaterial( {
@@ -150,15 +172,17 @@ export class Player {
 	moveRight() {
 		this.character.position.x += this.speed;
 
+
 		if ( !this.faceingRight ) {
+
 			
 			this.faceingLeft = false;
 			this.faceingRight = true;
 
 			let turn = setInterval(() => {
 
-				if ( this.character.rotation.y > this.faceRight ) {
-					this.character.rotation.y -= this.turnSpeed;
+				if ( this.faceRight > this.character.rotation.y  ) {
+					this.character.rotation.y += this.turnSpeed;
 				} else {
 					clearInterval(turn);
 				}
@@ -180,8 +204,8 @@ export class Player {
 
 			let turn = setInterval(() => {
 
-				if ( this.character.rotation.y < this.faceLeft ) {
-					this.character.rotation.y += this.turnSpeed;
+				if ( this.faceLeft < this.character.rotation.y ) {
+					this.character.rotation.y -= this.turnSpeed;
 				} else {
 					clearInterval(turn);
 				}
